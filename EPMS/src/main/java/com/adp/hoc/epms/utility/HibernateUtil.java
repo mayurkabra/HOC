@@ -9,6 +9,9 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import com.adp.hoc.epms.entity.Department;
+import com.adp.hoc.epms.entity.Employee;
+import com.adp.hoc.epms.entity.JobLevel;
 import com.adp.hoc.epms.entity.Organization;
 
 public class HibernateUtil {
@@ -44,6 +47,9 @@ public class HibernateUtil {
 	        
 	        //Add annotated classes here
 	        sources.addAnnotatedClass(Organization.class);
+	        sources.addAnnotatedClass(Employee.class);
+	        sources.addAnnotatedClass(Department.class);
+	        /*sources.addAnnotatedClass(JobLevel.class);*/
 
 	        // Create Metadata
 	        Metadata metadata = sources.getMetadataBuilder().build();

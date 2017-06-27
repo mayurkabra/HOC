@@ -24,7 +24,7 @@ public class TestController {
 	@RequestMapping(value="testHibernate")
 	public void testHibernate(){
 		
-		testService.addOrganizationTest("ADP", new Date());
+		//testService.addOrganizationTest("ADP", new Date());
 	}
 
 }
