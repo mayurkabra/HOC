@@ -41,8 +41,18 @@ public class Employee {
 	
 	private long joiningDate;
 	
+	private boolean isActive;
+	
 	//private List<MBO> allMBOs;
 	
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Department department;
 
@@ -118,10 +128,12 @@ public class Employee {
 		this.jobLevel = jobLevel;
 		this.jobTitle = jobTitle;
 		this.joiningDate = joiningDate;
+		this.setActive(true);
 	}
 
 	public Employee() {
 		super();
+		this.setActive(true);
 		// TODO Auto-generated constructor stub
 	}
 

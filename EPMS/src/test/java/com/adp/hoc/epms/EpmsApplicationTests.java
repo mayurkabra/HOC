@@ -39,26 +39,27 @@ public class EpmsApplicationTests {
 			department.setDepartmentName("GDT");
 			department.setOrganization(organization);
 			
-			Employee employee1 = new Employee("A","B","C",JobLevel.CEO, "CEO", new Date().getTime());
-			employee1.setDepartment(department);
+			Employee ceoEmployee = new Employee("A","B","C",JobLevel.CEO, "CEO", new Date().getTime());
+			ceoEmployee.setDepartment(department);
 			
-			Employee employee2 = new Employee("A","B","C",JobLevel.HOD, "Manager", new Date().getTime());
-			employee2.setDepartment(department);
-			employee2.setManager(employee1);
+			Employee managerEmployee = new Employee("A","B","C",JobLevel.HOD, "Manager", new Date().getTime());
+			managerEmployee.setDepartment(department);
+			managerEmployee.setManager(ceoEmployee);
 
 			Employee employee3 = new Employee("A","B","C",JobLevel.Employee, "Employee", new Date().getTime());
 			employee3.setDepartment(department);
-			employee3.setManager(employee2);
+			employee3.setManager(managerEmployee);
 
 			Employee employee4 = new Employee("A","B","C",JobLevel.Employee, "Employee", new Date().getTime());
 			employee4.setDepartment(department);
-			employee4.setManager(employee2);
+			employee4.setManager(managerEmployee);
 
 			Employee employee5 = new Employee("A","B","C",JobLevel.Employee, "Employee", new Date().getTime());
 			employee5.setDepartment(department);
-			employee5.setManager(employee2);
+			employee5.setManager(managerEmployee);
+			employee5.setActive(false);
 			
-			department.setHeadOfDepartment(employee2);
+			department.setHeadOfDepartment(managerEmployee);
 
 			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 			Session currentSession = sessionFactory.getCurrentSession();
@@ -66,8 +67,8 @@ public class EpmsApplicationTests {
 			
 			currentSession.save(organization);
 			currentSession.save(department);
-			currentSession.save(employee1);
-			currentSession.save(employee2);
+			currentSession.save(ceoEmployee);
+			currentSession.save(managerEmployee);
 			currentSession.save(employee5);
 			currentSession.save(employee3);
 			currentSession.save(employee4);
