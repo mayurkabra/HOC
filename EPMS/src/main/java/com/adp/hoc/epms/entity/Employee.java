@@ -1,5 +1,7 @@
 package com.adp.hoc.epms.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,8 +18,13 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Cascade;
 
 @Entity
-public class Employee {
+public class Employee implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long employeeDBId;

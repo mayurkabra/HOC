@@ -1,5 +1,7 @@
 package com.adp.hoc.epms.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,8 +15,13 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.Cascade;
 
 @Entity
-public class Department {
+public class Department implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long departmentId;
