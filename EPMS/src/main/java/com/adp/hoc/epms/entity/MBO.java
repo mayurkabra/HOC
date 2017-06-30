@@ -9,6 +9,8 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -20,12 +22,36 @@ public class MBO extends Measurable implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private MBOType mboType;
 	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="mbo_cycle_id")
+	private MBOCycle mboCycle;
+	
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<WeightedMeasurable> weightedMeasurables = new ArrayList<>();
+
+	public MBO(MBOType mboType, MBOCycle mboCycle) {
+		super();
+		this.mboType = mboType;
+		this.mboCycle = mboCycle;
+		
+		if(mboType.equals(MBOType.ORGANIZATION_MBO)){
+			mboCycle.getOrganizationalWeigtedMeasurableInDepartmentalMBO().setMeasurable(this);
+		}
+	}
 	
-	private long effectiveFrom;
-	
-	private long effectiveTill;
+	public MBO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+	public MBO(String description, double scoreNumerator, double scoreDenominator) {
+		super(description, scoreNumerator, scoreDenominator);
+		// TODO Auto-generated constructor stub
+	}
+
+
 
 	public List<WeightedMeasurable> getWeightedMeasurables() {
 		return weightedMeasurables;
@@ -58,25 +84,17 @@ public class MBO extends Measurable implements Serializable {
 	public void setMboType(MBOType mboType) {
 		this.mboType = mboType;
 	}
-
-	public long getEffectiveFrom() {
-		return effectiveFrom;
-	}
-
-	public void setEffectiveFrom(long effectiveFrom) {
-		this.effectiveFrom = effectiveFrom;
-	}
-
-	public long getEffectiveTill() {
-		return effectiveTill;
-	}
-
-	public void setEffectiveTill(long effectiveTill) {
-		this.effectiveTill = effectiveTill;
-	}
 	
 	public void recalculateScore(){
 		this.setWeightedMeasurables(this.getWeightedMeasurables());
+	}
+
+	public MBOCycle getMboCycle() {
+		return mboCycle;
+	}
+
+	public void setMboCycle(MBOCycle mboCycle) {
+		this.mboCycle = mboCycle;
 	}
 
 }

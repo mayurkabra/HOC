@@ -12,6 +12,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import com.adp.hoc.epms.entity.Department;
 import com.adp.hoc.epms.entity.Employee;
 import com.adp.hoc.epms.entity.MBO;
+import com.adp.hoc.epms.entity.MBOCycle;
 import com.adp.hoc.epms.entity.Measurable;
 import com.adp.hoc.epms.entity.Organization;
 import com.adp.hoc.epms.entity.WeightedMeasurable;
@@ -54,6 +55,7 @@ public class HibernateUtil {
 	        sources.addAnnotatedClass(Measurable.class);
 	        sources.addAnnotatedClass(WeightedMeasurable.class);
 	        sources.addAnnotatedClass(MBO.class);
+	        sources.addAnnotatedClass(MBOCycle.class);
 	        /*sources.addAnnotatedClass(JobLevel.class);*/
 
 	        // Create Metadata

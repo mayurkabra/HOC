@@ -16,10 +16,12 @@ import com.adp.hoc.epms.entity.Department;
 import com.adp.hoc.epms.entity.Employee;
 import com.adp.hoc.epms.entity.JobLevel;
 import com.adp.hoc.epms.entity.MBO;
+import com.adp.hoc.epms.entity.MBOCycle;
 import com.adp.hoc.epms.entity.MBOType;
 import com.adp.hoc.epms.entity.Measurable;
 import com.adp.hoc.epms.entity.Organization;
 import com.adp.hoc.epms.entity.WeightedMeasurable;
+import com.adp.hoc.epms.service.MBOService;
 import com.adp.hoc.epms.utility.HibernateUtil;
 
 @RunWith(SpringRunner.class)
@@ -98,8 +100,8 @@ public class EpmsApplicationTests {
 			orgMBO.addWeightedMeasurable(wm1);
 			orgMBO.addWeightedMeasurable(wm2);
 			orgMBO.addWeightedMeasurable(wm3);
-			orgMBO.setEffectiveFrom(new Date().getTime());
-			orgMBO.setEffectiveTill(new Date().getTime());
+			/*orgMBO.setEffectiveFrom(new Date().getTime());
+			orgMBO.setEffectiveTill(new Date().getTime());*/
 			
 			currentSession.save(orgMBO);
 			
@@ -125,12 +127,91 @@ public class EpmsApplicationTests {
 			depMBO.setMboType(MBOType.DEPARTMENT_MBO);
 			depMBO.addWeightedMeasurable(derivedOrgMBO);
 			depMBO.addWeightedMeasurable(wm4);
-			depMBO.setEffectiveFrom(new Date().getTime());
-			depMBO.setEffectiveTill(new Date().getTime());
+			/*depMBO.setEffectiveFrom(new Date().getTime());
+			depMBO.setEffectiveTill(new Date().getTime());*/
 			
 			currentSession.save(depMBO);
 			
 			
+			
+			beginTransaction.commit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	@Transactional
+	public void testMBOCycle(){
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			Session currentSession = sessionFactory.getCurrentSession();
+			Transaction beginTransaction = currentSession.beginTransaction();
+			
+			Organization organization = new Organization();
+			organization.setLastMBORefreshDate(new Date().getTime());
+			organization.setOrgName("HOC");
+			
+			Department department = new Department();
+			department.setDepartmentName("GDT");
+			department.setOrganization(organization);
+			
+			Employee ceoEmployee = new Employee("A","B","C",JobLevel.CEO, "CEO", new Date().getTime());
+			ceoEmployee.setDepartment(department);
+			
+			Employee managerEmployee = new Employee("A","B","C",JobLevel.HOD, "Manager", new Date().getTime());
+			managerEmployee.setDepartment(department);
+			managerEmployee.setManager(ceoEmployee);
+
+			Employee employee3 = new Employee("A","B","C",JobLevel.Employee, "Employee", new Date().getTime());
+			employee3.setDepartment(department);
+			employee3.setManager(managerEmployee);
+
+			Employee employee4 = new Employee("A","B","C",JobLevel.Employee, "Employee", new Date().getTime());
+			employee4.setDepartment(department);
+			employee4.setManager(managerEmployee);
+
+			Employee employee5 = new Employee("A","B","C",JobLevel.Employee, "Employee", new Date().getTime());
+			employee5.setDepartment(department);
+			employee5.setManager(managerEmployee);
+			employee5.setActive(false);
+			
+			department.setHeadOfDepartment(managerEmployee);
+			
+			currentSession.save(organization);
+			currentSession.save(department);
+			currentSession.save(ceoEmployee);
+			currentSession.save(managerEmployee);
+			currentSession.save(employee5);
+			currentSession.save(employee3);
+			currentSession.save(employee4);
+			
+			MBOCycle mboCycle = new MBOCycle(organization, new Date().getTime(), new Date().getTime(), 25, 15);
+			currentSession.save(mboCycle);
+			
+			Measurable m1 = new Measurable("New Clients", 0, 50);
+			WeightedMeasurable wm1 = new WeightedMeasurable();
+			wm1.setMeasurable(m1);
+			wm1.setWeight(50);
+			
+			Measurable m2 = new Measurable("Old Clients", 0, 30);
+			WeightedMeasurable wm2 = new WeightedMeasurable();
+			wm2.setMeasurable(m2);
+			wm2.setWeight(25);
+			
+			Measurable m3 = new Measurable("Country Clients", 0, 30);
+			WeightedMeasurable wm3 = new WeightedMeasurable();
+			wm3.setMeasurable(m3);
+			wm3.setWeight(25);
+			
+			MBO orgMBO = new MBO(MBOType.ORGANIZATION_MBO, mboCycle);
+			orgMBO.setDescription("Test MBO");
+			orgMBO.addWeightedMeasurable(wm1);
+			orgMBO.addWeightedMeasurable(wm2);
+			orgMBO.addWeightedMeasurable(wm3);
+			
+			currentSession.save(orgMBO);
 			
 			beginTransaction.commit();
 		} catch (Exception e) {
