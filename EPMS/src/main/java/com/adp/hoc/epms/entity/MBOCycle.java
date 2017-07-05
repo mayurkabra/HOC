@@ -1,12 +1,16 @@
 package com.adp.hoc.epms.entity;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -29,6 +33,10 @@ public class MBOCycle implements Serializable {
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	private WeightedMeasurable organizationalWeigtedMeasurableInDepartmentalMBO;
+	
+	@OneToMany(cascade=CascadeType.ALL)
+	@MapKeyColumn(name="department_id")
+	private Map<Department, WeightedMeasurable> departmentalWeigtedMeasurableInEmployeeMBO;
 	
 	private double departmentalWeightInEmployeeMBO;
 
@@ -55,6 +63,8 @@ public class MBOCycle implements Serializable {
 		orgToDep.setWeight(orgPercentageInDepartment);
 		orgToDep.setMeasurable(new Measurable());
 		this.organizationalWeigtedMeasurableInDepartmentalMBO = orgToDep;
+		
+		this.departmentalWeigtedMeasurableInEmployeeMBO = new HashMap<>();
 	}
 
 
@@ -111,6 +121,17 @@ public class MBOCycle implements Serializable {
 
 	public void setDepartmentalWeightInEmployeeMBO(double departmentalWeightInEmployeeMBO) {
 		this.departmentalWeightInEmployeeMBO = departmentalWeightInEmployeeMBO;
+	}
+
+
+	public Map<Department, WeightedMeasurable> getDepartmentalWeigtedMeasurableInEmployeeMBO() {
+		return departmentalWeigtedMeasurableInEmployeeMBO;
+	}
+
+
+	public void setDepartmentalWeigtedMeasurableInEmployeeMBO(
+			Map<Department, WeightedMeasurable> departmentalWeigtedMeasurableInEmployeeMBO) {
+		this.departmentalWeigtedMeasurableInEmployeeMBO = departmentalWeigtedMeasurableInEmployeeMBO;
 	}
 	
 	

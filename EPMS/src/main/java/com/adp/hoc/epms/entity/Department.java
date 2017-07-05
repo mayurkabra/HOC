@@ -1,6 +1,8 @@
 package com.adp.hoc.epms.entity;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Cascade;
@@ -33,6 +37,11 @@ public class Department implements Serializable {
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	private Employee headOfDepartment;
+	
+
+	@OneToMany(cascade=CascadeType.ALL)
+	@MapKeyColumn(name="mbo_cycle_id")
+	private Map<MBOCycle, MBO> allMBOsMap;
 
 	public long getDepartmentId() {
 		return departmentId;
@@ -64,6 +73,20 @@ public class Department implements Serializable {
 
 	public void setHeadOfDepartment(Employee headOfDepartment) {
 		this.headOfDepartment = headOfDepartment;
+	}
+
+	public Map<MBOCycle, MBO> getAllMBOsMap() {
+		return allMBOsMap;
+	}
+
+	public void setAllMBOsMap(Map<MBOCycle, MBO> allMBOsMap) {
+		this.allMBOsMap = allMBOsMap;
+	}
+
+	public Department() {
+		super();
+		allMBOsMap = new HashMap<>();
+		// TODO Auto-generated constructor stub
 	}
 	
 	//private List<MBO> allMBOs;

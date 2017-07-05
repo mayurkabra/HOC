@@ -36,7 +36,13 @@ public class MBO extends Measurable implements Serializable {
 		
 		if(mboType.equals(MBOType.ORGANIZATION_MBO)){
 			mboCycle.getOrganizationalWeigtedMeasurableInDepartmentalMBO().setMeasurable(this);
-		}
+		} else if(mboType.equals(MBOType.DEPARTMENT_MBO)){
+			this.addWeightedMeasurable(mboCycle.getOrganizationalWeigtedMeasurableInDepartmentalMBO());
+		} /*else if(mboType.equals(MBOType.EMPLOYEE_MBO)){
+			WeightedMeasurable weightedMeasurable = new WeightedMeasurable();
+			weightedMeasurable.setMeasurable(new Measurable());
+			weightedMeasurable.setWeight(mboCycle.getDepartmentalWeightInEmployeeMBO());
+		}*/
 	}
 	
 	public MBO() {

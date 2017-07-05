@@ -1,6 +1,8 @@
 package com.adp.hoc.epms.entity;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -12,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
@@ -62,6 +66,11 @@ public class Employee implements Serializable {
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Department department;
+	
+
+	@OneToMany(cascade=CascadeType.ALL)
+	@MapKeyColumn(name="mbo_cycle_id")
+	private Map<MBOCycle, MBO> allMBOsMap;
 
 	public long getEmployeeDBId() {
 		return employeeDBId;
@@ -136,6 +145,7 @@ public class Employee implements Serializable {
 		this.jobTitle = jobTitle;
 		this.joiningDate = joiningDate;
 		this.setActive(true);
+		allMBOsMap = new HashMap<>();
 	}
 
 	public Employee() {
@@ -150,6 +160,14 @@ public class Employee implements Serializable {
 
 	public void setDepartment(Department department) {
 		this.department = department;
+	}
+
+	public Map<MBOCycle, MBO> getAllMBOsMap() {
+		return allMBOsMap;
+	}
+
+	public void setAllMBOsMap(Map<MBOCycle, MBO> allMBOsMap) {
+		this.allMBOsMap = allMBOsMap;
 	}
 	
 	

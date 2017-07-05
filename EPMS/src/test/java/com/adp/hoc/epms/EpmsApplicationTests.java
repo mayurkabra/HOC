@@ -37,7 +37,7 @@ public class EpmsApplicationTests {
 	public void addOrgDepEmp(){
 		try {
 			Organization organization = new Organization();
-			organization.setLastMBORefreshDate(new Date().getTime());
+			//organization.setLastMBORefreshDate(new Date().getTime());
 			organization.setOrgName("HOC");
 			
 			Department department = new Department();
@@ -150,7 +150,7 @@ public class EpmsApplicationTests {
 			Transaction beginTransaction = currentSession.beginTransaction();
 			
 			Organization organization = new Organization();
-			organization.setLastMBORefreshDate(new Date().getTime());
+			//organization.setLastMBORefreshDate(new Date().getTime());
 			organization.setOrgName("HOC");
 			
 			Department department = new Department();
@@ -210,8 +210,42 @@ public class EpmsApplicationTests {
 			orgMBO.addWeightedMeasurable(wm1);
 			orgMBO.addWeightedMeasurable(wm2);
 			orgMBO.addWeightedMeasurable(wm3);
-			
 			currentSession.save(orgMBO);
+			
+			MBO depMBO = new MBO(MBOType.DEPARTMENT_MBO, mboCycle);
+			depMBO.setDescription("Dep MBO");
+			
+			WeightedMeasurable depWeightedMeasurable = new WeightedMeasurable();
+			depWeightedMeasurable.setMeasurable(depMBO);
+			depWeightedMeasurable.setWeight(mboCycle.getDepartmentalWeightInEmployeeMBO());
+			mboCycle.getDepartmentalWeigtedMeasurableInEmployeeMBO().put(department, depWeightedMeasurable);
+			currentSession.save(mboCycle);
+
+			m1.setScoreNumerator(25);
+			m2.setScoreNumerator(15);
+			m3.setScoreNumerator(15);
+			
+			orgMBO.recalculateScore();
+			
+			Measurable m4 = new Measurable("xxxxxxxx", 30, 50);
+			WeightedMeasurable wm4 = new WeightedMeasurable();
+			wm4.setMeasurable(m4);
+			wm4.setWeight(50);
+			
+			depMBO.addWeightedMeasurable(wm4);
+			depMBO.recalculateScore();
+
+			currentSession.save(depMBO);
+
+			currentSession.update(m1);
+			currentSession.update(m2);
+			currentSession.update(m3);
+			
+			MBO empMBO = new MBO(MBOType.EMPLOYEE_MBO, mboCycle);
+			empMBO.setDescription("Test Emp MBO");
+			empMBO.addWeightedMeasurable(mboCycle.getDepartmentalWeigtedMeasurableInEmployeeMBO().get(employee3.getDepartment()));
+			
+			currentSession.save(empMBO);
 			
 			beginTransaction.commit();
 		} catch (Exception e) {

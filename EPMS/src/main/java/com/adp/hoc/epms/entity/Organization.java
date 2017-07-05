@@ -1,10 +1,16 @@
 package com.adp.hoc.epms.entity;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Organization implements Serializable{
@@ -17,15 +23,18 @@ public class Organization implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int orgId;
+	private long orgId;
 	private String orgName;
-	private long lastMBORefreshDate;
+
+	@OneToMany(cascade=CascadeType.ALL)
+	@MapKeyColumn(name="mbo_cycle_id")
+	private Map<MBOCycle, MBO> allMBOsMap;
 
 	
-	public int getOrgId() {
+	public long getOrgId() {
 		return orgId;
 	}
-	public void setOrgId(int orgId) {
+	public void setOrgId(long orgId) {
 		this.orgId = orgId;
 	}
 	public String getOrgName() {
@@ -34,12 +43,17 @@ public class Organization implements Serializable{
 	public void setOrgName(String orgName) {
 		this.orgName = orgName;
 	}
-	public long getLastMBORefreshDate() {
-		return lastMBORefreshDate;
+	public Map<MBOCycle, MBO> getAllMBOsMap() {
+		return allMBOsMap;
 	}
-	public void setLastMBORefreshDate(long lastMBORefreshDate) {
-		this.lastMBORefreshDate = lastMBORefreshDate;
+	public void setAllMBOsMap(Map<MBOCycle, MBO> allMBOsMap) {
+		this.allMBOsMap = allMBOsMap;
 	}
+	public Organization() {
+		super();
+		this.allMBOsMap = new HashMap<>();
+	}
+	
 	
 	
 
