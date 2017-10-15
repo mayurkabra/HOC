@@ -13,4 +13,5 @@ public class EpmsApplication {
 		HibernateUtil.getSessionFactory();
 		//test commit
 	}
+	//Test
 }
